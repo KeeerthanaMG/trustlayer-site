@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TrustLayer AI — Think before your agent acts</title>
+<meta name="description" content="Review risky AI prompts locally, turn them into safer next steps, and see how Synapse combines three policy checks into one tool call.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;font-family:"Plus Jakarta Sans",system-ui,sans-serif;color:#191c19;background:#efefee;--ink:#191c19;--quiet:#4e5551;--green:#38643c;--radius:25px}
+*{box-sizing:border-box}body{margin:0;min-width:280px}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit}a{color:inherit}button:focus-visible,a:focus-visible,code:focus-visible{outline:3px solid #4a3b9e;outline-offset:4px}h1,h2,p,figure,ol{margin:0}svg{display:block;flex:none}
+.site{width:min(1374px,calc(100% - 48px));margin:0 auto;padding:25px 0 26px}
+.masthead{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 3px 16px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;letter-spacing:-.035em}.brand-mark{display:grid;place-items:center;width:31px;height:31px;border-radius:10px;background:#1c2c23;color:#e5f3cf}.top-link{font-size:.85rem;font-weight:800;text-decoration:none}.top-link:hover{text-decoration:underline}
+.stage{display:grid;grid-template-columns:minmax(214px,.94fr) minmax(390px,1.8fr) minmax(253px,1.08fr);grid-template-rows:minmax(125px,auto) minmax(335px,auto) auto;gap:12px}
+.panel{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.95);border-radius:var(--radius);box-shadow:0 3px 14px #2330280c;min-width:0}
+.alert{grid-area:1/1;background:linear-gradient(135deg,#f5d5e4,#fae7ec);display:grid;align-items:center;padding:18px}
+.toast{display:flex;align-items:center;gap:12px;background:#fff8f7;border-radius:15px;padding:13px 12px;box-shadow:0 7px 0 -3px #eac6ce,0 10px 15px #88475e13}.toast-icon{display:grid;place-items:center;border-radius:50%;width:34px;height:34px;background:#33222c;color:#fff1f2}.toast strong{display:block;font-size:.86rem;margin-bottom:2px}.toast small{display:block;font-size:.75rem;line-height:1.4;color:#5f4f58}
+.hosts{grid-area:2/1/span 2;background:linear-gradient(158deg,#f9fbfc,#d3e2ea);padding:26px 22px;display:flex;flex-direction:column;gap:17px}
+h2{font-size:clamp(1.4rem,2.15vw,2rem);line-height:1.15;letter-spacing:-.056em}.hosts p,.evidence p,.install p{font-size:.9rem;line-height:1.5;color:var(--quiet)}
+.hosts-bottom{margin-top:auto;display:grid;gap:9px}.chip{width:max-content;max-width:100%;display:flex;gap:10px;align-items:center;border:1px solid #849ba138;background:#f6fbffdb;padding:9px 12px;border-radius:999px;font-weight:750;font-size:.83rem}.chip:nth-child(2){margin-left:13%}.chip:nth-child(3){margin-left:22%}.chip svg{width:17px;height:17px;color:#365060}.local{padding-top:7px;font-size:.75rem!important;color:#354c56!important}
+.hero{grid-area:1/2/span 2;display:flex;flex-direction:column;min-height:471px;padding:32px 30px 25px;background:radial-gradient(ellipse at 92% 75%,#f5eba1 0%,transparent 62%),linear-gradient(145deg,#e6efd7,#e9f0b9 67%,#f4efb0)}
+.hero-copy{position:relative;z-index:3}h1{font-size:clamp(2.15rem,3.9vw,4.05rem);line-height:.99;letter-spacing:-.083em;font-weight:800}h1 span{color:var(--green)}.hero-copy p{max-width:38ch;color:#3e4e31;font-size:clamp(.88rem,1.18vw,1.05rem);line-height:1.5;margin:14px 0 17px}
+.cta{display:inline-flex;align-items:center;justify-content:center;border:1px solid #24362a;background:#24362a;color:#fff;padding:10px 16px;border-radius:999px;font-size:.82rem;font-weight:800;text-decoration:none;transition:background .2s}.cta:hover{background:#416a44}
+.demo-art{position:relative;isolation:isolate;min-height:207px;flex:1;margin-top:13px}.window{position:absolute;border-radius:13px;overflow:hidden;border:2px solid #fff;box-shadow:0 13px 30px #38482d29}.window-head{display:flex;align-items:center;gap:4px;background:#26342c;height:22px;padding:0 8px;color:#f7faf3;font-size:.59rem}.window-head i{background:#d7e2d9;width:5px;height:5px;border-radius:50%;opacity:.72}.window-head span{margin-left:5px;font-weight:700}
+.back{left:8%;top:8%;width:68%;height:84%;background:#dfeac9;transform:rotate(-8deg);padding-bottom:8px}.back ul{padding:0 12px 0 18px;list-style:none;font-size:.68rem;font-weight:750;color:#496044;line-height:2}.back li::before{content:"";display:inline-block;margin-right:6px;width:5px;height:5px;border-radius:50%;background:#6d8e5a}
+.front{left:21%;top:15%;width:76%;min-height:155px;background:#faf6ff;transform:rotate(3deg)}.front-body{padding:12px 13px 13px}.front-body strong{font-size:.76rem;display:block;color:#3e3456}.prompt-example{font-size:.75rem;line-height:1.4;color:#383148;margin:5px 0 9px;min-height:32px}.demo-toggle{border:0;border-radius:999px;padding:6px 9px;background:#e9dcfa;color:#3f2c61;cursor:pointer;font-size:.69rem;font-weight:800}.demo-toggle:hover{background:#ddc8f5}
+.evidence{grid-area:1/3/span 2;background:linear-gradient(155deg,#fff6e9,#f5eadd);padding:27px 22px 21px;display:flex;flex-direction:column}.evidence h2{font-size:clamp(3.1rem,5.1vw,5.2rem);line-height:1;letter-spacing:-.09em;margin:10px 0 4px}.kicker{font-size:.76rem;font-weight:800;color:#68533f}.evidence .metric{font-size:1.03rem;color:#35291d;font-weight:800}.chart{display:grid;gap:13px;margin-top:auto;padding:19px 0 13px}.chart-line{display:grid;gap:6px}.chart-label{display:flex;justify-content:space-between;gap:6px;font-size:.79rem;font-weight:800;color:#413326}.track{background:#eaded0;height:21px;border-radius:6px;overflow:hidden}.fill{height:100%;width:100%;background:#b8997e;border-radius:6px}.fill.composed{width:33.333%;background:linear-gradient(90deg,#40734a,#78954b)}.caption{font-size:.75rem!important}.evidence .source{display:inline-block;margin-top:10px;font-size:.75rem;font-weight:800;text-decoration-thickness:1px;text-underline-offset:3px}
+.install{grid-area:3/2/span 1/span 2;background:linear-gradient(104deg,#f0e9fb,#dcd9f5);padding:20px 23px;display:grid;grid-template-columns:minmax(180px,.55fr) minmax(0,1fr);gap:15px 20px;align-items:center}.install h2{margin-bottom:6px}.install p{font-size:.78rem;color:#504765}.install .download{font-size:.76rem;font-weight:800;display:inline-block;margin-top:8px;text-underline-offset:3px}.install-controls{min-width:0}.host-choice{margin:0 0 7px;display:flex;gap:6px;border:0;padding:0}.host-choice label{position:relative;display:inline-grid;cursor:pointer}.host-choice input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0}.host-choice span{display:block;padding:6px 11px;border-radius:999px;background:#ffffff75;font-size:.74rem;font-weight:800;color:#473e59}.host-choice input:checked+span{background:#423669;color:white}.host-choice input:focus-visible+span{outline:3px solid #4a3b9e;outline-offset:2px}
+.command{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:7px 7px 7px 12px;border:1px solid #7765aa25;box-shadow:0 4px 13px #4634650c}.command code{flex:1;min-width:0;display:block;overflow:auto;white-space:nowrap;font-size:.76rem;line-height:1.8;scrollbar-width:thin;color:#352a4e}.copy{flex:none;border:0;background:#ece6f6;color:#393054;padding:8px 11px;border-radius:8px;cursor:pointer;font-size:.75rem;font-weight:800}.copy:hover{background:#ddd0f3}.hint{margin-top:6px!important;min-height:1.2em}.footer{display:flex;justify-content:space-between;gap:12px;color:#545b56;font-size:.69rem;margin:12px 4px 0}.footer a{text-underline-offset:3px}
+.stage .panel{animation:enter .7s cubic-bezier(.16,1,.3,1) both}.stage .hero{animation-delay:.02s}.stage .alert{animation-delay:.09s}.stage .evidence{animation-delay:.15s}.stage .hosts{animation-delay:.21s}.stage .install{animation-delay:.27s}.window{animation:surface .77s .34s cubic-bezier(.16,1,.3,1) backwards}.front{animation-delay:.43s}
+@keyframes enter{from{opacity:0;translate:0 14px;scale:.987;clip-path:inset(2% round 26px)}to{opacity:1;translate:0;scale:1;clip-path:inset(0 round 26px)}}
+@keyframes surface{from{opacity:0;translate:0 10px}to{opacity:1;translate:0}}
+@media(max-width:1030px){.site{width:min(930px,calc(100% - 32px))}.stage{grid-template-columns:1.38fr 1fr;grid-template-rows:auto auto auto}.hero{grid-area:1/1;min-height:438px}.evidence{grid-area:1/2}.alert{grid-area:2/1}.hosts{grid-area:2/2/span 2;min-height:285px}.install{grid-area:3/1;grid-template-columns:1fr}.install .hint{margin-bottom:1px}}
+@media(max-width:640px){.site{width:calc(100% - 24px);padding:15px 0 20px}.masthead{margin-bottom:12px}.stage{display:flex;flex-direction:column;gap:10px}.hero{order:0;min-height:435px;padding:24px 20px 15px}.alert{order:1}.evidence{order:2;min-height:329px}.hosts{order:3;min-height:240px}.install{order:4;padding:18px}.hero-copy p{margin:12px 0 14px}h1{font-size:clamp(2.08rem,9vw,3.25rem)}.footer{flex-wrap:wrap}.demo-art{min-height:185px}.evidence,.install{animation:none!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="site">
+<header class="masthead">
+<a href="#" class="brand"><span class="brand-mark"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 20 6v5c0 4.5-3.1 7.8-8 10-4.9-2.2-8-5.5-8-10V6l8-3Z"/><path d="m8.5 12 2.2 2.2 4.7-5"/></svg></span>TrustLayer AI</a>
+<a class="top-link" href="#install">Installation</a>
+</header>
+<main class="stage" aria-label="TrustLayer AI product overview">
+<section class="panel hero" aria-labelledby="headline">
+<div class="hero-copy"><h1 id="headline">Think before<br><span>your agent acts.</span></h1><p>Catch risky requests, keep the work you meant to do, and send a safer prompt.</p><a class="cta" href="#install">Get TrustLayer</a></div>
+<div class="demo-art" aria-label="Interactive illustration of prompt refinement">
+<div class="window back" aria-hidden="true"><div class="window-head"><i></i><i></i><i></i><span>Policy checks</span></div><ul><li>Identify the action</li><li>Assess the impact</li><li>Check your policy</li></ul></div>
+<div class="window front"><div class="window-head" aria-hidden="true"><i></i><i></i><i></i><span>Interactive preview</span></div><div class="front-body"><strong id="demo-state">Original prompt</strong><p class="prompt-example" id="demo-prompt" aria-live="polite">Find old build output and remove .env files.</p><button type="button" class="demo-toggle" id="refine" aria-pressed="false">Show safer version</button></div></div>
+</div>
+</section>
+<section class="panel alert" aria-label="Example TrustLayer review"><div class="toast"><span class="toast-icon"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2v20M2 12h20M5 5l14 14M19 5 5 19"/></svg></span><div><strong>Review before you send</strong><small>A flagged prompt gives you a choice to refine or proceed.</small></div></div></section>
+<section class="panel hosts" aria-labelledby="hosts-heading"><h2 id="hosts-heading">Your editor.<br>Your rules.</h2><p>Keep the conversation in the tools you already use. Customize what gets reviewed in a local Markdown policy.</p><div class="hosts-bottom">
+<span class="chip"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 4 16 8-8 2-3 7Z"/></svg>Cursor</span>
+<span class="chip"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="m7 9 3 3-3 3m6 0h4"/></svg>Codex</span>
+<span class="chip"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="10" width="10" height="9" rx="2"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg>Local policy</span>
+<p class="local">Desktop hooks keep no runtime logs.</p></div></section>
+<section class="panel evidence" aria-labelledby="results-title"><p class="kicker">Measured in live Codex</p><h2 id="results-title">67%</h2><p class="metric">fewer tool calls</p><figure class="chart" aria-label="Nine individual calls versus three composed calls"><div class="chart-line"><div class="chart-label"><span>Individual tools</span><span>9 calls</span></div><div class="track" aria-hidden="true"><div class="fill"></div></div></div><div class="chart-line"><div class="chart-label"><span>Synapse composition</span><span>3 calls</span></div><div class="track" aria-hidden="true"><div class="fill composed"></div></div></div></figure><p class="caption">Same three scenarios. Same decisions. Synapse Custom mode combined classification, consequences, and policy checks.</p><a class="source" href="https://github.com/KeeerthanaMG/trustlayer-ai/blob/main/synapse/README.md">Benchmark details on GitHub</a></section>
+<section class="panel install" id="install" aria-labelledby="install-title"><div><h2 id="install-title">Install in one command</h2><p>For Windows and macOS. Requires Node.js 20+ and Python 3.10+ with Tk.</p><a class="download" href="https://github.com/KeeerthanaMG/trustlayer-ai/releases">Installer on GitHub Releases</a><p>GitHub access currently required.</p></div><div class="install-controls"><fieldset class="host-choice" aria-label="Choose your editor"><label><input type="radio" value="cursor" name="editor" checked><span>Cursor</span></label><label><input type="radio" value="codex" name="editor"><span>Codex</span></label></fieldset><div class="command"><code id="command" tabindex="0">npx --yes --package ./keeerthanamg-trustlayer-ai-0.1.6.tgz trustlayer-ai install cursor</code><button type="button" id="copy" class="copy">Copy</button></div><p class="hint" id="install-note" role="status">Run beside the installer, then restart Cursor and open Agent Chat.</p></div></section>
+</main>
+<footer class="footer"><span>Local prompt review for Cursor and Codex.</span><a href="https://github.com/KeeerthanaMG/trustlayer-ai">Source on GitHub</a></footer>
+</div>
+<script>
+const toggle = document.querySelector("#refine");
+const exampleTitle = document.querySelector("#demo-state");
+const exampleText = document.querySelector("#demo-prompt");
+toggle.addEventListener("click", () => {
+  const refined = toggle.getAttribute("aria-pressed") === "false";
+  toggle.setAttribute("aria-pressed", String(refined));
+  exampleTitle.textContent = refined ? "Safer prompt" : "Original prompt";
+  exampleText.textContent = refined
+    ? "List old build output as cleanup candidates. Leave sensitive configuration and the workspace unchanged."
+    : "Find old build output and remove .env files.";
+  toggle.textContent = refined ? "Show original" : "Show safer version";
+});
+const command = document.querySelector("#command");
+const note = document.querySelector("#install-note");
+const prefix = "npx --yes --package ./keeerthanamg-trustlayer-ai-0.1.6.tgz trustlayer-ai install ";
+document.querySelectorAll('input[name="editor"]').forEach(input => input.addEventListener("change", () => {
+  if (!input.checked) return;
+  command.textContent = prefix + input.value;
+  command.scrollLeft = 0;
+  note.textContent = input.value === "codex"
+    ? "Run beside the installer, restart Codex, then review and trust its hooks."
+    : "Run beside the installer, then restart Cursor and open Agent Chat.";
+}));
+document.querySelector("#copy").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(command.textContent);
+    note.textContent = "Command copied.";
+  } catch {
+    const range = document.createRange();
+    range.selectNodeContents(command);
+    const selection = window.getSelection();
+    if (selection) {
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    note.textContent = "Command selected. Copy it with your keyboard.";
+  }
+});
+</script>
+</body>
+</html>
