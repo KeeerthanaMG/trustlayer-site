@@ -33,6 +33,10 @@ h2{font-size:clamp(1.4rem,2.15vw,2rem);line-height:1.15;letter-spacing:-.056em}.
 .stage .panel{animation:enter .7s cubic-bezier(.16,1,.3,1) both}.stage .hero{animation-delay:.02s}.stage .alert{animation-delay:.09s}.stage .evidence{animation-delay:.15s}.stage .hosts{animation-delay:.21s}.stage .install{animation-delay:.27s}.window{animation:surface .77s .34s cubic-bezier(.16,1,.3,1) backwards}.front{animation-delay:.43s}
 @keyframes enter{from{opacity:0;translate:0 14px;scale:.987;clip-path:inset(2% round 26px)}to{opacity:1;translate:0;scale:1;clip-path:inset(0 round 26px)}}
 @keyframes surface{from{opacity:0;translate:0 10px}to{opacity:1;translate:0}}
+.window{transition:transform .35s cubic-bezier(.16,1,.3,1)}.demo-art:hover .back,.demo-art:focus-within .back{transform:translate(-3px,-5px) rotate(-10deg)}.demo-art:hover .front,.demo-art:focus-within .front{transform:translate(4px,-4px) rotate(0)}
+.toast{animation:surface .75s .36s cubic-bezier(.16,1,.3,1) backwards}.chart .fill{transform-origin:left;animation:bar-grow .85s .42s cubic-bezier(.2,.8,.2,1) backwards}.chart .composed{animation-delay:.62s}.prompt-example{transition:color .22s}.demo-toggle[aria-pressed="true"]{background:#dbeacb;color:#254731}
+.install{scroll-margin-block:16px}.install:target,.install.is-selected,.install:focus-visible{outline:2px solid #64539a;outline-offset:3px}.install .download{margin-right:10px}.copy{transition:background .2s,transform .2s}.copy:active{transform:scale(.94)}
+@keyframes bar-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media(max-width:1030px){.site{width:min(930px,calc(100% - 32px))}.stage{grid-template-columns:1.38fr 1fr;grid-template-rows:auto auto auto}.hero{grid-area:1/1;min-height:438px}.evidence{grid-area:1/2}.alert{grid-area:2/1}.hosts{grid-area:2/2/span 2;min-height:285px}.install{grid-area:3/1;grid-template-columns:1fr}.install .hint{margin-bottom:1px}}
 @media(max-width:640px){.site{width:calc(100% - 24px);padding:15px 0 20px}.masthead{margin-bottom:12px}.stage{display:flex;flex-direction:column;gap:10px}.hero{order:0;min-height:435px;padding:24px 20px 15px}.alert{order:1}.evidence{order:2;min-height:329px}.hosts{order:3;min-height:240px}.install{order:4;padding:18px}.hero-copy p{margin:12px 0 14px}h1{font-size:clamp(2.08rem,9vw,3.25rem)}.footer{flex-wrap:wrap}.demo-art{min-height:185px}.evidence,.install{animation:none!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -46,7 +50,7 @@ h2{font-size:clamp(1.4rem,2.15vw,2rem);line-height:1.15;letter-spacing:-.056em}.
 </header>
 <main class="stage" aria-label="TrustLayer AI product overview">
 <section class="panel hero" aria-labelledby="headline">
-<div class="hero-copy"><h1 id="headline">Think before<br><span>your agent acts.</span></h1><p>Catch risky requests, keep the work you meant to do, and send a safer prompt.</p><a class="cta" href="#install">Get TrustLayer</a></div>
+<div class="hero-copy"><h1 id="headline">Think before<br><span>your agent acts.</span></h1><p>Catch risky requests, keep the work you meant to do, and send a safer prompt.</p><a class="cta" href="https://github.com/KeeerthanaMG/trustlayer-ai/releases/download/v0.1.6/keeerthanamg-trustlayer-ai-0.1.6.tgz">Get TrustLayer</a></div>
 <div class="demo-art" aria-label="Interactive illustration of prompt refinement">
 <div class="window back" aria-hidden="true"><div class="window-head"><i></i><i></i><i></i><span>Policy checks</span></div><ul><li>Identify the action</li><li>Assess the impact</li><li>Check your policy</li></ul></div>
 <div class="window front"><div class="window-head" aria-hidden="true"><i></i><i></i><i></i><span>Interactive preview</span></div><div class="front-body"><strong id="demo-state">Original prompt</strong><p class="prompt-example" id="demo-prompt" aria-live="polite">Find old build output and remove .env files.</p><button type="button" class="demo-toggle" id="refine" aria-pressed="false">Show safer version</button></div></div>
@@ -59,11 +63,21 @@ h2{font-size:clamp(1.4rem,2.15vw,2rem);line-height:1.15;letter-spacing:-.056em}.
 <span class="chip"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="10" width="10" height="9" rx="2"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg>Local policy</span>
 <p class="local">Desktop hooks keep no runtime logs.</p></div></section>
 <section class="panel evidence" aria-labelledby="results-title"><p class="kicker">Measured in live Codex</p><h2 id="results-title">67%</h2><p class="metric">fewer tool calls</p><figure class="chart" aria-label="Nine individual calls versus three composed calls"><div class="chart-line"><div class="chart-label"><span>Individual tools</span><span>9 calls</span></div><div class="track" aria-hidden="true"><div class="fill"></div></div></div><div class="chart-line"><div class="chart-label"><span>Synapse composition</span><span>3 calls</span></div><div class="track" aria-hidden="true"><div class="fill composed"></div></div></div></figure><p class="caption">Same three scenarios. Same decisions. Synapse Custom mode combined classification, consequences, and policy checks.</p><a class="source" href="https://github.com/KeeerthanaMG/trustlayer-ai/blob/main/synapse/README.md">Benchmark details on GitHub</a></section>
-<section class="panel install" id="install" aria-labelledby="install-title"><div><h2 id="install-title">Install in one command</h2><p>For Windows and macOS. Requires Node.js 20+ and Python 3.10+ with Tk.</p><a class="download" href="https://github.com/KeeerthanaMG/trustlayer-ai/releases">Installer on GitHub Releases</a><p>GitHub access currently required.</p></div><div class="install-controls"><fieldset class="host-choice" aria-label="Choose your editor"><label><input type="radio" value="cursor" name="editor" checked><span>Cursor</span></label><label><input type="radio" value="codex" name="editor"><span>Codex</span></label></fieldset><div class="command"><code id="command" tabindex="0">npx --yes --package ./keeerthanamg-trustlayer-ai-0.1.6.tgz trustlayer-ai install cursor</code><button type="button" id="copy" class="copy">Copy</button></div><p class="hint" id="install-note" role="status">Run beside the installer, then restart Cursor and open Agent Chat.</p></div></section>
+<section class="panel install" id="install" aria-labelledby="install-title" tabindex="-1"><div><h2 id="install-title">Install in one command</h2><p>For Windows and macOS. Requires Node.js 20+ and Python 3.10+ with Tk.</p><a class="download" href="https://github.com/KeeerthanaMG/trustlayer-ai/releases/download/v0.1.6/keeerthanamg-trustlayer-ai-0.1.6.tgz">Download v0.1.6</a><a class="download" href="https://github.com/KeeerthanaMG/trustlayer-ai/releases/download/v0.1.6/keeerthanamg-trustlayer-ai-0.1.6.tgz.sha256">SHA-256</a></div><div class="install-controls"><fieldset class="host-choice" aria-label="Choose your editor"><label><input type="radio" value="cursor" name="editor" checked><span>Cursor</span></label><label><input type="radio" value="codex" name="editor"><span>Codex</span></label></fieldset><div class="command"><code id="command" tabindex="0">npx --yes --package ./keeerthanamg-trustlayer-ai-0.1.6.tgz trustlayer-ai install cursor</code><button type="button" id="copy" class="copy">Copy</button></div><p class="hint" id="install-note" role="status">Run beside the installer, then restart Cursor and open Agent Chat.</p></div></section>
 </main>
 <footer class="footer"><span>Local prompt review for Cursor and Codex.</span><a href="https://github.com/KeeerthanaMG/trustlayer-ai">Source on GitHub</a></footer>
 </div>
 <script>
+const install = document.querySelector("#install");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+document.querySelector('a[href="#install"]').addEventListener("click", event => {
+  event.preventDefault();
+  if (location.hash !== "#install") history.pushState(null, "", "#install");
+  install.classList.add("is-selected");
+  install.focus({preventScroll: true});
+  install.scrollIntoView({block: "nearest", behavior: reducedMotion.matches ? "auto" : "smooth"});
+});
+window.addEventListener("hashchange", () => install.classList.toggle("is-selected", location.hash === "#install"));
 const toggle = document.querySelector("#refine");
 const exampleTitle = document.querySelector("#demo-state");
 const exampleText = document.querySelector("#demo-prompt");
